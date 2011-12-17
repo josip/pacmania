@@ -8,3 +8,36 @@ body {
 #screen {
   display: block;
 }
+
+#scoreboard_container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  background: rgba(70, 72, 62, 0.4);
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+#scoreboard {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#scoreboard li {
+  padding: 0;
+  list-style: none;
+  padding: 5px;
+  border-bottom: 1px solid #fff;
+}
+
+#scoreboard canvas, #scoreboard span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#scoreboard canvas {
+  margin: 0 15px 0 0;
+}

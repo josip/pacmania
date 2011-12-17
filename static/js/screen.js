@@ -49,6 +49,8 @@ var Game = {
     Game.scheduleTreat(0);
     Game.scheduleTreat(1);
     Game.scheduleTreat(2);
+
+    this.scoreboard = $('#scoreboard');
   },
 
   tick: function () {
@@ -77,6 +79,12 @@ var Game = {
     p.direction = 'right';
     p.score = 0;
     this.players[p.id] = p;
+
+    var r = PLAYER_R;
+    this.scoreboard.append('<li><canvas id="player_' + p.id + '" width="' + (r*2) + '" height="' + (r*2) + '"></canvas><span id="score_' + p.id + '">0</span></li>');
+    var icon = $('#player_' + p.id)[0].getContext('2d');
+    this.drawBody(icon, r/2 + 12, r/2 + 10, p.colour, 'right', true);
+    this.drawEye(icon, r/2 + 12, r/2 + 10, '#000', 'right');
   },
 
   updateDirection: function (id, d) {
@@ -103,22 +111,22 @@ var Game = {
     }
   },
 
-  drawBody: function (ctx, x, y, c, dir) {
-    var parts = this._body.body[dir];
+  drawBody: function (ctx, x, y, c, dir, openMouth) {
+    var m = this._body.body[dir],
+        n = this.__n__ % 10;
 
     ctx.fillStyle = c;
-    var n = this.__n__%10;
-    if((n > 4 && n < 8)) {
+    if((n > 4 && n < 8) && openMouth !== true) {
       ctx.beginPath();
       ctx.arc(x, y, PLAYER_R, 0, 2 * Math.PI, false);
       ctx.fill();
     } else {
       ctx.beginPath();
-      ctx.arc(x, y, PLAYER_R, parts[0][0] * Math.PI, parts[0][1] * Math.PI, false);
+      ctx.arc(x, y, PLAYER_R, m[0][0] * Math.PI, m[0][1] * Math.PI, false);
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(x, y, PLAYER_R, parts[1][0] * Math.PI, parts[1][1] * Math.PI, false);
+      ctx.arc(x, y, PLAYER_R, m[1][0] * Math.PI, m[1][1] * Math.PI, false);
       ctx.fill();
     }
   },
@@ -150,6 +158,7 @@ var Game = {
         overlapY = isInRange(p.y, t[1], t[1] + TREAT_H) || isInRange(t[1], p.y - PLAYER_R, p.y + PLAYER_R);
         if(overlapX && overlapY) {
           console.log('oneup', p.id, ++p.score);
+          $('#score_' + p.id).text(p.score * 100);
           treats[n] = [-444, -444, 0];
           this.scheduleTreat(n);
         }

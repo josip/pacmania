@@ -11,9 +11,13 @@ function hsv2hex(h, s, v) {
   return (new colour.HSV(h/360, s/100, v/100)).hex()
 }
 
+function randColour () {
+  return hsv2hex(Math.ceil(Math.random()*1000)%360, 80, 92)
+}
+
 var commands = {
-  join:   function (req) { return { id: Math.random().toString(16).split('.')[1],
-                                    colour: hsv2hex(Math.ceil(Math.random()*1000)%360, 80, 92)} },
+  join:   function (req) { return { id:     Math.random().toString(16).split('.')[1],
+                                    colour: randColour()} },
   leave:  function (req) { return {id: req.param('id')} },
   move:   function (req) { return {id: req.param('id'), direction: req.param('d')} }
 };

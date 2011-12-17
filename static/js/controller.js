@@ -1,5 +1,5 @@
 (function () {
-  var PLAYER = {id: null, colour: null}, $PLAYER, CTX, DIR = 'right';
+  var PLAYER = {id: null, colour: null}, $PLAYER, CTX;
 
   $(function () {
     $.getJSON('/player/join', function (resp) {
@@ -11,10 +11,7 @@
 
       $PLAYER.on('click', blink);
       $('input').on('click', function () {
-        if(this.className == DIR) return;
-        DIR = this.className;
         $.getJSON('/player/move?id=' + PLAYER.id + '&d=' + this.className, function () {  });
-        rotatePlayer(this.className);
       });
 
       var i = setInterval(blink, 3600);
